@@ -4,7 +4,7 @@ export default class Footer extends React.Component {
     render() {
         return (
             <div className="panel panel-default">
-              <div className="panel-footer center"> noordean ©2017.</div>
+              <div className="panel-footer text-center"> noordean ©2017.</div>
             </div>
         );
     }

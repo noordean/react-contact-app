@@ -10,9 +10,29 @@ app.listen(3333, () => {
   console.log('app running...');
 });
 
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.post('/api/save', (req, res) => {
-  dbClass.saveContact(req.body.name, req.body.number);
-  res.json({ message: 'Contact saved succesfully' });
+  if (req.body.name === undefined || req.body.number === undefined) {
+    res.json({ message: 'You need to specify name and number in the request body' });
+  } else if (req.body.name === "" || req.body.number === "") {
+    res.json({ message: 'Both name and number must be supplied' });
+  } else {
+    const result = dbClass.getContact(req.body.name);
+    result.then((contact) => {
+      if (contact.length === 0) {
+        dbClass.saveContact(req.body.name, req.body.number);
+        res.json({ message: 'Contact saved succesfully' });
+      } else {
+        res.json({ message: 'Name already in phone-book' });
+      }
+    });
+  }
 });
 
 app.post('/api/get', (req, res) => {
@@ -21,7 +41,7 @@ app.post('/api/get', (req, res) => {
     if (contacts) {
       res.json(contacts);
     } else {
-      res.json({ error: 'Error occured!' });
+      res.json({ message: 'Error occured!' });
     }
   });
 });

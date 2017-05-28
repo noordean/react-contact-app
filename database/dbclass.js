@@ -33,6 +33,11 @@ class DatabaseClass {
     const result = this.phoneBook.find({}).exec();
     return result;
   }
+
+  getContact(Name) {
+    const result = this.phoneBook.find({ name: Name }).exec();
+    return result;
+  }
 }
 
 export default new DatabaseClass();

@@ -17,7 +17,6 @@ export default class ViewContacts extends React.Component {
       });
     }
     render() {
-        console.log(this.state.result);
         return (
             <div>
               <h4>Phone-Book</h4>

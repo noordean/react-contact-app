@@ -1,28 +1,43 @@
 import React from 'react';
+import contactStore from '../stores/contactStore';
+import contactAction from '../actions/contactActions';
 
 export default class ViewContacts extends React.Component {
     constructor() {
         super();
-        this.state = { result: [] }
+        this.state = { contacts: contactStore.getContacts() };
+        this.changeState = this.changeState.bind(this);
     }
-    componentDidMount() {
-      $.post("http://localhost:3333/api/get", (data) => {
-        const contactList = [];
-        data.forEach((contact, index) => {
-            contactList.push(<tr key={index}><td>{contact.name}</td><td>{contact.number}</td></tr>);
-        });
-        this.setState({
-            result: contactList
-        });
+
+    changeState() {
+      this.setState({
+        contacts: contactStore.getContacts()
       });
     }
+
+    componentWillMount() {
+      contactStore.on('change', this.changeState);
+    }
+
+    componentDidMount() {
+      contactAction.loadContacts();
+    }
+
+    componentWillUnmount() {
+      contactStore.removeListener('change', this.changeState);
+    }
+
     render() {
+        const contactList = [];
+        this.state.contacts.forEach((contact, index) => {
+            contactList.push(<tr key={index}><td>{contact.name}</td><td>{contact.number}</td></tr>);
+        });
         return (
             <div>
               <h4>Phone-Book</h4>
               <table className="table table-hover">
                 <tbody>
-                  {this.state.result}
+                  {contactList}
                 </tbody>
               </table>
             </div>

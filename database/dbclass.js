@@ -25,7 +25,6 @@ class DatabaseClass {
       if (err) {
         throw new Error(err);
       }
-      console.log('data saved!');
     });
   }
 
@@ -37,6 +36,22 @@ class DatabaseClass {
   getContact(Name) {
     const result = this.phoneBook.find({ name: Name }).exec();
     return result;
+  }
+
+  deleteContact(Name) {
+    this.phoneBook.findOneAndRemove({ name: Name }, (err) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+  }
+
+  updateContact(id, Name, Numba) {
+    this.phoneBook.findOneAndUpdate({ _id: id }, { name: Name, number: Numba }, (err) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
   }
 }
 

@@ -6,6 +6,8 @@ class contactStore extends EventEmitter {
     super();
     this.contacts = [];
     this.saveStatus = '';
+    this.deleteStatus = '';
+    this.updateMessage = '';
   }
 
   loadContacts(data) {
@@ -16,6 +18,24 @@ class contactStore extends EventEmitter {
   checkSaveStatus(message) {
       this.saveStatus = message;
       this.emit('change');
+  }
+
+  showDeleteStatus(message) {
+      this.deleteStatus = message;
+      this.emit('change');
+  }
+
+  getDeleteMessage() {
+    return this.deleteStatus;
+  }
+
+  showUpdateStatus(message) {
+      this.updateMessage = message;
+      this.emit('change');
+  }
+
+  getUpdateMessage() {
+    return this.updateMessage;
   }
   
   getSaveStatus() {
@@ -33,6 +53,12 @@ class contactStore extends EventEmitter {
         break;
       case 'SAVE_DATA':
         this.checkSaveStatus(action.message);
+        break;
+      case 'DELETE_DATA':
+        this.showDeleteStatus(action.message);
+        break;
+      case 'UPDATE_DATA':
+        this.showUpdateStatus(action.message);
         break;
     }
   }

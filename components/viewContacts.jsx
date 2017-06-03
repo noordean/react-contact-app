@@ -1,17 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router';
 import contactStore from '../stores/contactStore';
 import contactAction from '../actions/contactActions';
 
 export default class ViewContacts extends React.Component {
     constructor() {
         super();
-        this.state = { contacts: contactStore.getContacts() };
+        this.state = { contacts: contactStore.getContacts(), deleteMessage: contactStore.getDeleteMessage() };
         this.changeState = this.changeState.bind(this);
     }
 
     changeState() {
       this.setState({
-        contacts: contactStore.getContacts()
+        contacts: contactStore.getContacts(),
+        deleteMessage: contactStore.getDeleteMessage()
       });
     }
 
@@ -26,11 +28,18 @@ export default class ViewContacts extends React.Component {
     componentWillUnmount() {
       contactStore.removeListener('change', this.changeState);
     }
-
+    
+    deleteContactHandler(name) {
+      const ask = confirm('You are about to delete ' + name);
+      if (ask) {
+        contactAction.deleteContact(name);
+        contactAction.loadContacts();
+      }
+    }
     render() {
         const contactList = [];
         this.state.contacts.forEach((contact, index) => {
-            contactList.push(<tr key={index}><td>{contact.name}</td><td>{contact.number}</td></tr>);
+            contactList.push(<tr key={index} ><td>{contact.name}</td><td>{contact.number}</td><td><Link to={"editcontact/" + contact._id}><button className="btn btn-info">Edit</button></Link></td><td><button className="btn btn-danger" onClick={this.deleteContactHandler.bind(this, contact.name)}>Delete</button></td></tr>);
         });
         return (
             <div>

@@ -11,15 +11,17 @@ class DatabaseClass {
 
     const phoneBookSchema = new mongoose.Schema({
       name: String,
-      number: String
+      number: String,
+      user: String
     });
     this.phoneBook = mongoose.model('phone-book', phoneBookSchema);
   }
 
-  saveContact(Name, phoneNumber) {
+  saveContact(Name, phoneNumber, userEmail) {
     const contactToSave = new this.phoneBook({
       name: Name,
-      number: phoneNumber
+      number: phoneNumber,
+      user: userEmail
     });
     contactToSave.save((err) => {
       if (err) {
@@ -28,18 +30,18 @@ class DatabaseClass {
     });
   }
 
-  getAllContacts() {
-    const result = this.phoneBook.find({}).exec();
+  getAllContacts(userEmail) {
+    const result = this.phoneBook.find({ user: userEmail }).exec();
     return result;
   }
 
-  getContact(Name) {
-    const result = this.phoneBook.find({ name: Name }).exec();
+  getContact(Name, userEmail) {
+    const result = this.phoneBook.find({ name: Name, user: userEmail }).exec();
     return result;
   }
 
-  deleteContact(Name) {
-    this.phoneBook.findOneAndRemove({ name: Name }, (err) => {
+  deleteContact(Name, userEmail) {
+    this.phoneBook.findOneAndRemove({ name: Name, user: userEmail }, (err) => {
       if (err) {
         throw new Error(err);
       }

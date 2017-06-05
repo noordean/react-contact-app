@@ -27,18 +27,21 @@ export default class SaveForm extends React.Component {
     e.preventDefault();
     const contactName = this.nameInput.value;
     const contactNumber = this.numberInput.value;
-    contactAction.saveData(contactName, contactNumber);
-    setTimeout(() => {
-      if (this.state.saveStatus.length > 0) {
-        alert(this.state.saveStatus);
-      }
-    }, 1000);
+    const userEmail = JSON.parse(localStorage.getItem('user')).email;
+    contactAction.saveData(contactName, contactNumber, userEmail);
   }
 
   render() {
+      if (!localStorage.user) {
+        return (
+            <img className="img-responsive center-block" src="images/contact-app.jpg" alt="Contact-app-img"/>
+        );
+      }
       const self = this;
         return (
             <form className="form-horizontal" onSubmit={this.saveHandler.bind(this)}>
+              <div className="text-center">{this.state.saveStatus}</div>
+
               <div className="form-group">
                 <label className="control-label col-sm-2">Name</label>
                 <div className="col-sm-10">

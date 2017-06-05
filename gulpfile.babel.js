@@ -23,7 +23,7 @@ gulp.task('bundle', ['transpile'], () => {
 });
 
 gulp.task('copy', ['bundle'], () => {
-  return gulp.src(['index.html'])
+  return gulp.src(['index.html', 'public/**/*.jpg'])
     .pipe(gulp.dest('dist'));
 });
 

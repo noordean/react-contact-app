@@ -22,24 +22,29 @@ export default class ViewContacts extends React.Component {
     }
 
     componentDidMount() {
-      contactAction.loadContacts();
+      contactAction.loadContacts(JSON.parse(localStorage.getItem('user')).email);
     }
 
     componentWillUnmount() {
       contactStore.removeListener('change', this.changeState);
     }
     
-    deleteContactHandler(name) {
+    deleteContactHandler(name, userEmail) {
       const ask = confirm('You are about to delete ' + name);
       if (ask) {
-        contactAction.deleteContact(name);
-        contactAction.loadContacts();
+        contactAction.deleteContact(name, userEmail);
+        contactAction.loadContacts(userEmail);
       }
     }
     render() {
+      if (!localStorage.user) {
+        return (
+            <img className="img-responsive center-block" src="images/contact-app.jpg" alt="Contact-app-img"/>
+        );
+      }
         const contactList = [];
         this.state.contacts.forEach((contact, index) => {
-            contactList.push(<tr key={index} ><td>{contact.name}</td><td>{contact.number}</td><td><Link to={"editcontact/" + contact._id}><button className="btn btn-info">Edit</button></Link></td><td><button className="btn btn-danger" onClick={this.deleteContactHandler.bind(this, contact.name)}>Delete</button></td></tr>);
+            contactList.push(<tr key={index} ><td>{contact.name}</td><td>{contact.number}</td><td><Link to={"editcontact/" + contact._id}><button className="btn btn-info">Edit</button></Link></td><td><button className="btn btn-danger" onClick={this.deleteContactHandler.bind(this, contact.name, JSON.parse(localStorage.getItem('user')).email)}>Delete</button></td></tr>);
         });
         return (
             <div>

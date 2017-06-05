@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import contactStore from '../stores/contactStore';
 import contactAction from '../actions/contactActions';
 
@@ -6,39 +7,34 @@ export default class EditContact extends React.Component {
   constructor(context) {
     super(context);
     this.state = {contacts: contactStore.getContacts(), updateMessage: contactStore.getUpdateMessage()}
-    this.changeState = this.changeState.bind(this);
  }
-
-  changeState() {
-      this.setState({
-        contacts: contactStore.getContacts(),
-     });
-   }
-
-  componentWillMount() {
-      contactStore.on('change', this.changeState);
-    }
-
-  componentDidMount() {
-      contactAction.loadContacts();
-    }
-
-  componentWillUnmount() {
-      contactStore.removeListener('change', this.changeState);
-    }
 
   updateHandler(e) {
     e.preventDefault();
     const contactName = this.nameInput.value;
     const contactNumber = this.numberInput.value;
-    contactAction.updateContact(this.props.params.id, contactName, contactNumber);
+    const userEmail = JSON.parse(localStorage.getItem('user')).email;
+    contactAction.updateContact(this.props.params.id, contactName, contactNumber, userEmail);
     this.context.router.replace('contacts');
   }
   
   render() {
+      if (!localStorage.user) {
+        return (
+            <img className="img-responsive center-block" src="images/contact-app.jpg" alt="Contact-app-img"/>
+        );
+      }
       const choosenContact = this.state.contacts.filter((contact) => {
           return contact._id === this.props.params.id;
       });
+      if (choosenContact.length === 0) {
+        return (
+        <div>
+            <h2>This page cannot be accessed directly</h2>
+            <Link to="/">Go back</Link>
+        </div>
+        );
+      } else {
       const self = this;
         return (
             <form className="form-horizontal" onSubmit={this.updateHandler.bind(this)}>
@@ -61,6 +57,7 @@ export default class EditContact extends React.Component {
               </div>
           </form>
         );
+      }
     }
 }
 

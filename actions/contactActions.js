@@ -2,7 +2,7 @@ import contactDispatcher from '../dispatcher/contactDispatcher';
 
 class contactActions {
   loadContacts(userEmail) {
-    $.post('http://localhost:3333/api/get', { user: userEmail }, (Data) => {
+    $.post('https://noordean-contact-api.herokuapp.com/api/get', { user: userEmail }, (Data) => {
     contactDispatcher.dispatch({
       type: 'LOAD_CONTACTS',
       data: Data
@@ -11,7 +11,7 @@ class contactActions {
   }
 
   saveData(Name, Contact, userEmail) {
-    $.post('http://localhost:3333/api/save', { name: Name, number: Contact, user: userEmail }, (Data) => {
+    $.post('https://noordean-contact-api.herokuapp.com/api/save', { name: Name, number: Contact, user: userEmail }, (Data) => {
       contactDispatcher.dispatch({
         type: 'SAVE_DATA',
         message: Data.message
@@ -20,7 +20,7 @@ class contactActions {
   }
 
   deleteContact(Name, userEmail) {
-    $.post('http://localhost:3333/api/delete', { name: Name, user: userEmail }, (Data) => {
+    $.post('https://noordean-contact-api.herokuapp.com/api/delete', { name: Name, user: userEmail }, (Data) => {
       contactDispatcher.dispatch({
         type: 'DELETE_DATA',
         message: Data.message
@@ -29,7 +29,7 @@ class contactActions {
   }
 
   updateContact(Id, newName, newNumber, userEmail) {
-    $.post('http://localhost:3333/api/update', { id: Id, name: newName, number: newNumber, user: userEmail }, (Data) => {
+    $.post('https://noordean-contact-api.herokuapp.com/api/update', { id: Id, name: newName, number: newNumber, user: userEmail }, (Data) => {
       contactDispatcher.dispatch({
         type: 'UPDATE_DATA',
         message: Data.message

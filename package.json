@@ -4,7 +4,8 @@
   "description": "checking react out",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp serve"
   },
   "author": "noordean",
   "license": "MIT",
@@ -22,7 +23,6 @@
     "gulp-babel": "^6.1.2",
     "gulp-nodemon": "^2.2.1",
     "mongoose": "^4.10.3",
-    "path": "^0.12.7",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-google-login": "^2.8.9",

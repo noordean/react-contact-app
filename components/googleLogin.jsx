@@ -1,9 +1,5 @@
 import React from 'react';
-import dotenv from 'dotenv';
 import GoogleLogin from 'react-google-login';
-
-
-dotenv.config();
 
  const onSignIn = (googleUser) => {
     const profile = googleUser.getBasicProfile();

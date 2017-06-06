@@ -3,6 +3,8 @@ import babel from 'gulp-babel';
 import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
+import nodemon from 'gulp-nodemon';
+import path from 'path';
 
 
 gulp.task('transpile', () =>
@@ -27,4 +29,11 @@ gulp.task('copy', ['bundle'], () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['copy']);
+gulp.task('serve', ['bundle', 'copy'], () => {
+  nodemon({
+    script: path.join('dist', 'server.js'),
+    ext: 'js'
+  });
+});
+
+gulp.task('default', ['serve']);

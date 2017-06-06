@@ -6,8 +6,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.listen(process.env.PORT || 3333, () => {
-  console.log('app running...');
+app.listen(process.env.PORT, () => {
+  // console.log('app running...');
 });
 
 
